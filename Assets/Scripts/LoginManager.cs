@@ -6,9 +6,9 @@ using PlayFab.ClientModels;
 using System.Threading.Tasks;
 using System;
 
-public class LoginManager : MonoBehaviour {
+public static class LoginManager {
 
-    async void Start() {
+    public static async void PrepareLoginPlayPab() {
 
         Debug.Log("ŠJŽn");
 
