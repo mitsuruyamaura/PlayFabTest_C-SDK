@@ -9,6 +9,9 @@ public class References {
     // PlayFab 開発者サイト
     //https://developer.playfab.com/ja-JP/sign-up
 
+    // サンプルプロジェクト
+    //https://github.com/minami-tea/PlayFabBookSample
+
     // PlayFab C# SDK
     //https://aka.ms/playfabCsharpsdkdownload
 
