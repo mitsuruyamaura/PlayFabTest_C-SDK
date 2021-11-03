@@ -64,6 +64,8 @@ public class AccountCanvas : MonoBehaviour
 
     
     private void OnClickSubmit() {
+
+
         Debug.Log("OK");
     }
 
