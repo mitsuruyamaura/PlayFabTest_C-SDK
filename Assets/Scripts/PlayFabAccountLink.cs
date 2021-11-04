@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 public static class PlayFabAccountLink
 {
@@ -13,10 +13,10 @@ public static class PlayFabAccountLink
     /// <param name="email"></param>
     /// <param name="password"></param>
     /// <returns></returns>
-    public static async Task<bool> SetEmailAndPasswordAsync(string email, string password) {
+    public static async UniTask<bool> SetEmailAndPasswordAsync(string email, string password) {
 
         var request = new AddUsernamePasswordRequest {
-            Username = PlayerPrefsManager.UserID,
+            Username = PlayerPrefsManager.UserId,
             Email = email,
             Password = password
         };

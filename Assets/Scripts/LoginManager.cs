@@ -5,18 +5,49 @@ using PlayFab;
 using PlayFab.ClientModels;
 using System.Threading.Tasks;
 using System;
+using Cysharp.Threading.Tasks;
 
 public static class LoginManager {
 
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    static LoginManager(){
+        // TitleId 設定
+        PlayFabSettings.staticSettings.TitleId = "DDCD3";
+
+        Debug.Log("TitleID 設定: " + PlayFabSettings.staticSettings.TitleId);
+    }
+
+    /// <summary>
+    /// ログインと同時に取得する情報の設定。
+    /// InfoRequestParameters の設定値になり、true にしておくことで各情報が自動的に取得できるようになる
+    /// 各パラメータの初期値はすべて false
+    /// 取得が多くなるほどログイン時間がかかり、メモリを消費するので気を付ける
+    /// 取得結果は InfoResultPayLoad に入っている。false のものはすべて null になる
+    /// </summary>
+    public static GetPlayerCombinedInfoRequestParams CombinedInfoRequestParams { get; }
+        = new GetPlayerCombinedInfoRequestParams {
+            GetUserAccountInfo = true,
+            GetPlayerProfile = true,
+            GetTitleData = true,
+            GetUserData = true,
+            GetUserInventory = true,
+            GetUserVirtualCurrency = true,
+            GetPlayerStatistics = true
+        };
+
     public static async void PrepareLoginPlayPab() {
 
-        Debug.Log("開始");
-
-        PlayFabSettings.staticSettings.TitleId = "DDCD3";
+        Debug.Log("ログイン 準備 開始");
 
         await LoginAndUpdateLocalCacheAsync();
 
         // デバッグ用
+
+        // TitleId 設定
+        //PlayFabSettings.staticSettings.TitleId = "DDCD3";
+
         //// ログインの情報(リクエスト)を作成して設定
         //var request = new LoginWithCustomIDRequest {
         //    CustomId = "GettingStartedGuide",
@@ -41,7 +72,7 @@ public static class LoginManager {
 
         Debug.Log("初期化開始");
 
-        var userId = PlayerPrefsManager.UserID;
+        var userId = PlayerPrefsManager.UserId;
 
         var loginResult = string.IsNullOrEmpty(userId) ? await CreateNewUserAsync() : await LoadUserAsync(userId);
 
@@ -66,6 +97,7 @@ public static class LoginManager {
             var request = new LoginWithCustomIDRequest {
                 CustomId = newUserId,
                 CreateAccount = true,
+                InfoRequestParameters = CombinedInfoRequestParams
             };
 
             // PlayFab にログイン
@@ -82,7 +114,7 @@ public static class LoginManager {
             }
 
             // PlayerPrefs に UserId を記録する
-            PlayerPrefsManager.UserID = newUserId;
+            PlayerPrefsManager.UserId = newUserId;
 
             return response.Result;
         }
@@ -101,9 +133,7 @@ public static class LoginManager {
         var request = new LoginWithCustomIDRequest {
             CustomId = userId,
             CreateAccount = false,
-
-            // TODO InfoRequestParameters の設定 
-
+            InfoRequestParameters = CombinedInfoRequestParams
         };
 
         // PlayFab にログイン
@@ -122,16 +152,19 @@ public static class LoginManager {
         return response.Result;
     }
 
-
-    public static async Task<bool> LoginEmailAndPasswordAsync(string email, string password) {
+    /// <summary>
+    /// Email とパスワードでログイン(アカウント回復用)
+    /// </summary>
+    /// <param name="email"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
+    public static async Task<(bool, string)> LoginEmailAndPasswordAsync(string email, string password) {
 
         // Email によるログインリクエストの作成
         var request = new LoginWithEmailAddressRequest {
-
             Email = email,
             Password = password,
-            //TODO InfoRequestParameters 
-
+            InfoRequestParameters = CombinedInfoRequestParams
         };
 
         // PlayFab にログイン
@@ -150,18 +183,19 @@ public static class LoginManager {
                     break;
             }
 
-            return false;
+            return (false, "メールアドレスかパスワードが正しくありません");
         }
 
         // PlayerPrefas を初期化して、ログイン結果の UserId を登録し直す
         PlayerPrefs.DeleteAll();
 
-        // 新しく PlayFab から UserId を取得(InfoResultPayload はクライアントプロフィールオプションで許可されてないと null になる)
-        PlayerPrefsManager.UserID = response.Result.InfoResultPayload.AccountInfo.CustomIdInfo.CustomId;
+        // 新しく PlayFab から UserId を取得
+        // InfoResultPayload はクライアントプロフィールオプション(InfoRequestParameters)で許可されてないと null になる
+        PlayerPrefsManager.UserId = response.Result.InfoResultPayload.AccountInfo.CustomIdInfo.CustomId;
 
         // Email でログインしたことを記録する
         PlayerPrefsManager.IsLoginEmailAdress = true;
 
-        return true;
+        return (true, "Email によるログインが完了しました。");
     }
 }

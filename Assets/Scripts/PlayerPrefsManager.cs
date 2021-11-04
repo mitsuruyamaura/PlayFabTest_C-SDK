@@ -4,12 +4,12 @@ using UnityEngine;
 /// PlayerPrefs のヘルパークラス
 /// </summary>
 public static class PlayerPrefsManager {
-    public static string UserID {
+    public static string UserId {
         set {
-            PlayerPrefs.SetString("UserID", value);
+            PlayerPrefs.SetString("UserId", value);
             PlayerPrefs.Save();
         }
-        get => PlayerPrefs.GetString("UserID");
+        get => PlayerPrefs.GetString("UserId");
     }
 
     /// <summary>
