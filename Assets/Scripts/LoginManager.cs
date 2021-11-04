@@ -121,4 +121,47 @@ public static class LoginManager {
 
         return response.Result;
     }
+
+
+    public static async Task<bool> LoginEmailAndPasswordAsync(string email, string password) {
+
+        // Email によるログインリクエストの作成
+        var request = new LoginWithEmailAddressRequest {
+
+            Email = email,
+            Password = password,
+            //TODO InfoRequestParameters 
+
+        };
+
+        // PlayFab にログイン
+        var response = await PlayFabClientAPI.LoginWithEmailAddressAsync(request);
+
+        // エラーハンドリング
+        if (response.Error != null) {
+            switch (response.Error.Error) {
+                case PlayFabErrorCode.InvalidParams:
+                case PlayFabErrorCode.InvalidEmailOrPassword:
+                case PlayFabErrorCode.AccountNotFound:
+                    Debug.Log("メールアドレスかパスワードが正しくありません");
+                    break;
+                default:
+                    Debug.Log(response.Error.GenerateErrorReport());
+                    break;
+            }
+
+            return false;
+        }
+
+        // PlayerPrefas を初期化して、ログイン結果の UserId を登録し直す
+        PlayerPrefs.DeleteAll();
+
+        // 新しく PlayFab から UserId を取得(InfoResultPayload はクライアントプロフィールオプションで許可されてないと null になる)
+        PlayerPrefsManager.UserID = response.Result.InfoResultPayload.AccountInfo.CustomIdInfo.CustomId;
+
+        // Email でログインしたことを記録する
+        PlayerPrefsManager.IsLoginEmailAdress = true;
+
+        return true;
+    }
 }

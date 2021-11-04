@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 
 public static class PlayFabAccountLink
 {
+    /// <summary>
+    /// ユーザーID と Email とパスワードを使ってアカウントの連携を行う
+    /// </summary>
+    /// <param name="email"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
     public static async Task<bool> SetEmailAndPasswordAsync(string email, string password) {
 
         var request = new AddUsernamePasswordRequest {

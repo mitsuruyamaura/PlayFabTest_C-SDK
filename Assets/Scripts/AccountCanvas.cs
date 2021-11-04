@@ -31,8 +31,11 @@ public class AccountCanvas : MonoBehaviour
     [SerializeField]
     private Button btnClosePopUp;
 
+    [SerializeField]
+    private Button btnEmainLogin;
 
-    private (string email, string pasword) inputValue;
+
+    private (string email, string pasword) inputValue;　　// Email とパスワード登録用
 
 
     void Start()
@@ -52,34 +55,46 @@ public class AccountCanvas : MonoBehaviour
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ => OnClickCloseCompletePopUp());
 
+        btnEmainLogin?.OnClickAsObservable()
+            .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
+            .Subscribe(_ => OnClickEmailLogin());
+
         // InputField
         emailInput?.OnEndEditAsObservable()
             .Subscribe(x => UpdateDispayEmail(x));
 
         passwordInput?.OnEndEditAsObservable()
             .Subscribe(x => UpdateDisplayPassword(x));
-
     }
 
-
+    /// <summary>
+    /// Email の値と表示の更新
+    /// </summary>
+    /// <param name="newEmail"></param>
     private void UpdateDispayEmail(string newEmail) {
         txtEmail.text = newEmail;
         inputValue.email = newEmail;
         Debug.Log(inputValue);
     }
 
-
+    /// <summary>
+    /// パスワードの値と表示の更新
+    /// </summary>
+    /// <param name="newPassword"></param>
     private void UpdateDisplayPassword(string newPassword) {
         txtPassword.text = newPassword;
         inputValue.pasword = newPassword;
         Debug.Log(inputValue);
     }
 
-    
+    /// <summary>
+    /// OK ボタンを押下した際の処理
+    /// </summary>
     private async void OnClickSubmit() {
 
-        Debug.Log("OK 承認開始");
+        Debug.Log("OK アカウント連携の承認開始");
 
+        // Email とパスワードを利用して、ユーザーアカウントの連携を試みる
         bool isLink = await PlayFabAccountLink.SetEmailAndPasswordAsync(inputValue.email, inputValue.pasword);
 
         if (isLink) {
@@ -91,16 +106,39 @@ public class AccountCanvas : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// NG ボタンを押下した際の処理
+    /// </summary>
     private void OnCliclCancel() {
+        this.gameObject.SetActive(false);
+
         Debug.Log("NG");
     }
 
-
+    /// <summary>
+    /// CompletePopUp をタップした際の処理
+    /// </summary>
     private void OnClickCloseCompletePopUp() {
 
         completePopUp.SetActive(false);
 
         this.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Email でログインボタンを押下した際の処理
+    /// </summary>
+    private async void OnClickEmailLogin() {
+
+        // Email でログインを試みる
+        bool isLogin =  await LoginManager.LoginEmailAndPasswordAsync(inputValue.email, inputValue.pasword);
+
+        if (isLogin) {
+            Debug.Log("Email によるログイン完了");
+
+            completePopUp.SetActive(true);
+        } else {
+            Debug.Log("ログイン失敗");
+        }
     }
 }

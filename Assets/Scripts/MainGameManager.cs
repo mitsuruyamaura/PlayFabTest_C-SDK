@@ -11,6 +11,4 @@ public class MainGameManager : MonoBehaviour
     {
         LoginManager.PrepareLoginPlayPab();
     }
-
-
 }
