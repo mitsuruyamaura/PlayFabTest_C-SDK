@@ -31,6 +31,9 @@ public class AccountCanvas : MonoBehaviour
     [SerializeField]
     private Button btnClosePopUp;
 
+    [SerializeField]
+    private Button btnEmainLogin;
+
 
     private (string email, string pasword) inputValue;　　// Email とパスワード登録用
 
@@ -51,6 +54,10 @@ public class AccountCanvas : MonoBehaviour
         btnClosePopUp?.OnClickAsObservable()
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ => OnClickCloseCompletePopUp());
+
+        btnEmainLogin?.OnClickAsObservable()
+            .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
+            .Subscribe(_ => OnClickEmailLogin());
 
         // InputField
         emailInput?.OnEndEditAsObservable()
@@ -87,6 +94,7 @@ public class AccountCanvas : MonoBehaviour
 
         Debug.Log("OK アカウント連携の承認開始");
 
+        // Email とパスワードを利用して、ユーザーアカウントの連携を試みる
         bool isLink = await PlayFabAccountLink.SetEmailAndPasswordAsync(inputValue.email, inputValue.pasword);
 
         if (isLink) {
@@ -115,5 +123,22 @@ public class AccountCanvas : MonoBehaviour
         completePopUp.SetActive(false);
 
         this.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Email でログインボタンを押下した際の処理
+    /// </summary>
+    private async void OnClickEmailLogin() {
+
+        // Email でログインを試みる
+        bool isLogin =  await LoginManager.LoginEmailAndPasswordAsync(inputValue.email, inputValue.pasword);
+
+        if (isLogin) {
+            Debug.Log("Email によるログイン完了");
+
+            completePopUp.SetActive(true);
+        } else {
+            Debug.Log("ログイン失敗");
+        }
     }
 }
