@@ -26,7 +26,7 @@ public class AccountCanvas : MonoBehaviour
     private Text txtPassword;
 
     [SerializeField]
-    private GameObject completePopUp;
+    private GameObject responsePopUp;
 
     [SerializeField]
     private Button btnClosePopUp;
@@ -34,13 +34,15 @@ public class AccountCanvas : MonoBehaviour
     [SerializeField]
     private Button btnEmainLogin;
 
+    [SerializeField]
+    private Text txtResponseInfo;
 
     private (string email, string pasword) inputValue;　　// Email とパスワード登録用
 
 
     void Start()
     {
-        completePopUp.SetActive(false);
+        responsePopUp.SetActive(false);
 
         // ボタンの登録
         btnSubmit?.OnClickAsObservable()
@@ -100,9 +102,13 @@ public class AccountCanvas : MonoBehaviour
         if (isLink) {
             Debug.Log("連携完了");
 
-            completePopUp.SetActive(true);
+            txtResponseInfo.text = "アカウント連携が完了しました。";
+            responsePopUp.SetActive(true);
         } else {
-            Debug.Log("連携失敗");
+            Debug.Log("アカウント連携が失敗しました。");
+
+            txtResponseInfo.text = "アカウント連携が失敗しました。";
+            responsePopUp.SetActive(true);
         }
     }
 
@@ -120,7 +126,7 @@ public class AccountCanvas : MonoBehaviour
     /// </summary>
     private void OnClickCloseCompletePopUp() {
 
-        completePopUp.SetActive(false);
+        responsePopUp.SetActive(false);
 
         this.gameObject.SetActive(false);
     }
@@ -130,15 +136,14 @@ public class AccountCanvas : MonoBehaviour
     /// </summary>
     private async void OnClickEmailLogin() {
 
-        // Email でログインを試みる
-        bool isLogin =  await LoginManager.LoginEmailAndPasswordAsync(inputValue.email, inputValue.pasword);
+        // Email でログインを試みる isLogin = true ならログイン成功
+        (bool isLogin, string log) response = await LoginManager.LoginEmailAndPasswordAsync(inputValue.email, inputValue.pasword);
 
-        if (isLogin) {
-            Debug.Log("Email によるログイン完了");
+        // TODO isLogin で分岐させてもいい
 
-            completePopUp.SetActive(true);
-        } else {
-            Debug.Log("ログイン失敗");
-        }
+        Debug.Log(response.log);
+
+        txtResponseInfo.text = response.log;
+        responsePopUp.SetActive(true);
     }
 }
