@@ -66,7 +66,7 @@ public static class PlayerPlofileManager
         Profile.DisplayName = name;
 
         // エラーなしで更新完了
-        return (true, string.Empty);
+        return (true, "ユーザー名を更新しました。: 新しいユーザー名 " + response.Result.DisplayName);
     }
 
     // TODO 統計情報、レベル、キャラの更新処理の追加

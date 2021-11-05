@@ -40,15 +40,20 @@ public static class UserDataManager
     }
 
     /// <summary>
-    /// PlayFab のユーザーデータの更新
+    /// PlayFab のユーザーデータの更新(Json を利用する場合)
     /// </summary>
+    /// <param name="userName">key</param>
+    /// <param name="userDataPermission"></param>
     /// <returns></returns>
-    public static async UniTask<(bool isSuccess, string errorMessage)> UpdateUserDataAsync() {
+    public static async UniTask<(bool isSuccess, string errorMessage)> UpdateUserDataAsync(string userName, UserDataPermission userDataPermission = UserDataPermission.Private) {
 
         var userJson = JsonConvert.SerializeObject(User);
 
         var request = new UpdateUserDataRequest {
-            Data = new Dictionary<string, string> { { "User", userJson } }
+            Data = new Dictionary<string, string> { { userName, userJson } },
+
+            // アクセス許可の変更
+            Permission = userDataPermission
         };
 
         var response = await PlayFabClientAPI.UpdateUserDataAsync(request);
@@ -59,5 +64,54 @@ public static class UserDataManager
         }
 
         return (true, string.Empty);
+    }
+
+    /// <summary>
+    /// プレイヤーデータの作成と更新(プレイヤーデータ(タイトル)に１つだけ登録する方法)
+    /// </summary>
+    /// <param name="updateUserName">key</param>
+    /// <param name="value">value</param>
+    /// <param name="userDataPermission"></param>
+    public static async void UpdatePlayerDataAsync(string updateUserName, string value, UserDataPermission userDataPermission = UserDataPermission.Private) {
+
+        var request = new UpdateUserDataRequest {
+            Data = new Dictionary<string, string> {
+                { updateUserName, value }
+            },
+
+            // アクセス許可の変更
+            Permission = userDataPermission
+        };
+
+        var response = await PlayFabClientAPI.UpdateUserDataAsync(request);
+
+        if (response.Error != null) {
+
+            Debug.Log("エラー");
+            return;
+        }
+
+        Debug.Log("プレイヤーデータ　更新");
+    }
+
+    /// <summary>
+    /// プレイヤーデータの削除
+    /// </summary>
+    /// <param name="deleteUserName">削除するユーザーの名前</param>
+    public static async void DeletePlayerDataAsync(string deleteUserName) {
+
+        var request = new UpdateUserDataRequest {
+            KeysToRemove = new List<string> { deleteUserName }
+        };
+
+        var response = await PlayFabClientAPI.UpdateUserDataAsync(request);
+
+        if (response.Error != null) {
+
+            Debug.Log("エラー");
+            return;
+        }
+
+        Debug.Log("プレイヤーデータ　削除");
     }
 }

@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
-using UniRx;
-using System;
 
-public class DisplayCanvas : MonoBehaviour
+public class DisplayNameCanvas : MonoBehaviour
 {
     [SerializeField]
     private Button btnSubmit;
@@ -70,7 +68,7 @@ public class DisplayCanvas : MonoBehaviour
         Debug.Log("OK アカウント連携の承認開始");
 
         // Email とパスワードを利用して、ユーザーアカウントの連携を試みる
-        (bool isSuccess, string errorLog) response = await PlayerPlofileManager.UpdateUserDisplayNameAsync(displayName);
+        (bool isSuccess, string message) response = await PlayerPlofileManager.UpdateUserDisplayNameAsync(displayName);
 
         // Debug用
         if (response.isSuccess) {
@@ -79,7 +77,7 @@ public class DisplayCanvas : MonoBehaviour
             Debug.Log("ユーザー名　更新失敗");
         }
 
-        txtResponseInfo.text = response.errorLog;
+        txtResponseInfo.text = response.message;
         responsePopUp.SetActive(true);
 
     }
