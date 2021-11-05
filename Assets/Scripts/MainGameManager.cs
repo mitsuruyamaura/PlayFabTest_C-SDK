@@ -8,8 +8,15 @@ public class MainGameManager : MonoBehaviour
     [SerializeField]
     private AccountCanvas accountCanvas;
     
-    void Start()
+    async UniTaskVoid Start()
     {
-        LoginManager.PrepareLoginPlayPab();
+        //LoginManager.PrepareLoginPlayPab();
+
+        // 初期化処理が終了するまで待機
+        await UniTask.WaitUntil(() => ApplicationEntryPoint.Initialized, cancellationToken : this.GetCancellationTokenOnDestroy());
+
+
+        // TODO 初期化処理が終了してから、他の処理を実行する(ログインしていないと API の呼び出しも失敗するため)
+
     }
 }
