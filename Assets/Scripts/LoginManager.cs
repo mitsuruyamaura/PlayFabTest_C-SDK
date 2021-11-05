@@ -211,5 +211,11 @@ public static class LoginManager {
 
         // ユーザーデータの初期化
         UserDataManager.SyncPlayFabToClient(loginResult.InfoResultPayload.UserData);
+        
+        // ユーザー名などの初期化
+        PlayerPlofileManager.SyncPlayFabToClient(loginResult.InfoResultPayload.PlayerProfile, loginResult.InfoResultPayload.PlayerStatistics);
+
+        // TODO 初期化処理を追加
+
     }
 }
