@@ -18,7 +18,7 @@ public static class UserDataManager
     /// PlayFab の最新データを取得してローカルにキャッシュ
     /// </summary>
     /// <param name="userData"></param>
-    public static async void SyncPlayFabToClient(Dictionary<string, UserDataRecord> userData) {
+    public static void SyncPlayFabToClient(Dictionary<string, UserDataRecord> userData) {
 
         // TODO Exp Level などを設定
 
@@ -31,12 +31,12 @@ public static class UserDataManager
         // TODO 他にも処理があれば追加
 
 
-        // Debug
-        (bool isSuccess, string errorMessage) updateUser = await UpdateUserDataAsync();
+        // Debug (メソッドに async を追加する)
+        //(bool isSuccess, string errorMessage) updateUser = await UpdateUserDataAsync();
 
-        if (updateUser.isSuccess) {
-            Debug.Log("PlayFab のユーザーデータ更新完了");
-        }
+        //if (updateUser.isSuccess) {
+        //    Debug.Log("PlayFab のユーザーデータ更新完了");
+        //}
     }
 
     /// <summary>
