@@ -26,11 +26,11 @@ public static class ApplicationEntryPoint
         //}
 
         // Debug モード中は、指定したシーンから開始
-        if (GameData.instance.isDebugOn) {
-            //SceneStateManager.NextScene(GameData.instance.debugSceneName);
+        //if (GameData.instance.isDebugOn) {
+        //    SceneStateManager.NextScene(GameData.instance.debugSceneName);
 
-            //SceneStateManager.NextScene(SceneName.Main);
-        }
+        //    //SceneStateManager.NextScene(SceneName.Main);
+        //}
 
         Initialized = true;
     }
