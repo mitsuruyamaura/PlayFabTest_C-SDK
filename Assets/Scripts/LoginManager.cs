@@ -74,10 +74,12 @@ public static class LoginManager {
 
         var userId = PlayerPrefsManager.UserId;
 
-        var loginResult = string.IsNullOrEmpty(userId) ? await CreateNewUserAsync() : await LoadUserAsync(userId);
+        // ユーザーID の取得を試みて、取得できない場合には匿名で新規作成する
+        var loginResult = string.IsNullOrEmpty(userId) 
+            ? await CreateNewUserAsync() : await LoadUserAsync(userId);
 
-        // TODO 取得したデータをキャッシュする
-        //await UpdateLocalCacheAsync(loginResult);
+        // データを自動で取得する設定にしているので、取得したデータをローカルにキャッシュする
+        await UpdateLocalCacheAsync(loginResult);
     }
 
     /// <summary>
@@ -197,5 +199,17 @@ public static class LoginManager {
         PlayerPrefsManager.IsLoginEmailAdress = true;
 
         return (true, "Email によるログインが完了しました。");
+    }
+
+
+    public static async UniTask UpdateLocalCacheAsync(LoginResult loginResult) {
+
+        // カタログ類の初期化。他のインスタンスの初期化にも必要なので最初に行う
+        await UniTask.WhenAll(
+                     
+            );
+
+        // ユーザーデータの初期化
+        UserDataManager.SyncPlayFabToClient(loginResult.InfoResultPayload.UserData);
     }
 }
