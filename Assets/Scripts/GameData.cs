@@ -8,7 +8,7 @@ public class GameData : MonoBehaviour
 
     public bool isDebugOn;
 
-    //public SceneName debugSceneName;
+    public SceneNameType debugSceneName;
 
     void Awake() {
         if (instance = null) {

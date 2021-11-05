@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public static class SceneStateManager
 {
-    public static void NextScene(SceneName nextSceneName) {
+    public static void NextScene(SceneNameType nextSceneName) {
         SceneManager.LoadScene(nextSceneName.ToString());
     }
 }
