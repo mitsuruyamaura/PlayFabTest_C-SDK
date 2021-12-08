@@ -420,6 +420,7 @@ namespace PlayFab.ClientModels
     /// <summary>
     /// A purchasable item from the item catalog
     /// </summary>
+    [System.Serializable]
     public class CatalogItem : IComparable<CatalogItem>
     {
         /// <summary>

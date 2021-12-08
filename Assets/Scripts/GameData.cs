@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using PlayFab.ClientModels;
 
 public class GameData : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class GameData : MonoBehaviour
     public SceneNameType debugSceneName;
 
     public SkillMasterData[] skillMasters;
+    public CatalogItem[] catalogItems;
+    
 
 
     void Awake() {
@@ -33,5 +36,16 @@ public class GameData : MonoBehaviour
         skillMasters = TitleDataManager.SkillMasterData.Select(x => x.Value).ToArray();
 
         Debug.Log(skillMasters[0].atk);
+    }
+
+
+    public void SetCatalogItems() {
+
+        catalogItems = new CatalogItem[CatalogueManager.CatalogItems.Count];
+
+        catalogItems = CatalogueManager.CatalogItems.Select(x => x.Value).ToArray();
+
+        Debug.Log(catalogItems[0].ItemId);
+        Debug.Log(catalogItems[1].DisplayName);
     }
 }
