@@ -9,3 +9,7 @@ public class SkillMasterData
     public int atk;
 
 }
+
+
+// CSV => Json ‚É•ÏŠ·
+//https://www.site24x7.com/ja/tools/csv-to-json.html
