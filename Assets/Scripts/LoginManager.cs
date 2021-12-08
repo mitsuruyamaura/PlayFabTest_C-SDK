@@ -37,7 +37,10 @@ public static class LoginManager {
             GetPlayerStatistics = true
         };
 
-    public static async void PrepareLoginPlayPab() {
+    /// <summary>
+    /// PlayFab へのログイン準備
+    /// </summary>
+    public static async UniTask PrepareLoginPlayPab() {
 
         Debug.Log("ログイン 準備 開始");
 
@@ -45,7 +48,7 @@ public static class LoginManager {
 
         // デバッグ用
 
-        // TitleId 設定
+        //TitleId 設定
         //PlayFabSettings.staticSettings.TitleId = "DDCD3";
 
         //// ログインの情報(リクエスト)を作成して設定
@@ -68,15 +71,19 @@ public static class LoginManager {
     /// ユーザーデータとタイトルデータを初期化
     /// </summary>
     /// <returns></returns>
-    public static async Task LoginAndUpdateLocalCacheAsync() {
+    public static async UniTask LoginAndUpdateLocalCacheAsync() {
 
         Debug.Log("初期化開始");
 
         var userId = PlayerPrefsManager.UserId;
 
         // ユーザーID の取得を試みて、取得できない場合には匿名で新規作成する
-        var loginResult = string.IsNullOrEmpty(userId) 
+        var loginResult = string.IsNullOrEmpty(userId)
             ? await CreateNewUserAsync() : await LoadUserAsync(userId);
+
+        // debug
+        //await CreateUserDataAsync();
+
 
         // データを自動で取得する設定にしているので、取得したデータをローカルにキャッシュする
         await UpdateLocalCacheAsync(loginResult);
@@ -86,7 +93,7 @@ public static class LoginManager {
     /// 新規ユーザーを作成して UserId を PlayerPrefs に保存
     /// </summary>
     /// <returns></returns>
-    private static async Task<LoginResult> CreateNewUserAsync() {
+    private static async UniTask<LoginResult> CreateNewUserAsync() {
 
         Debug.Log("ユーザーデータなし。新規ユーザー作成");
 
@@ -127,7 +134,7 @@ public static class LoginManager {
     /// </summary>
     /// <param name="userId"></param>
     /// <returns></returns>
-    private static async Task<LoginResult> LoadUserAsync(string userId) {
+    private static async UniTask<LoginResult> LoadUserAsync(string userId) {
 
         Debug.Log("ユーザーデータあり。ログイン開始");
 
@@ -160,7 +167,7 @@ public static class LoginManager {
     /// <param name="email"></param>
     /// <param name="password"></param>
     /// <returns></returns>
-    public static async Task<(bool, string)> LoginEmailAndPasswordAsync(string email, string password) {
+    public static async UniTask<(bool, string)> LoginEmailAndPasswordAsync(string email, string password) {
 
         // Email によるログインリクエストの作成
         var request = new LoginWithEmailAddressRequest {
@@ -201,6 +208,11 @@ public static class LoginManager {
         return (true, "Email によるログインが完了しました。");
     }
 
+    /// <summary>
+    /// PlayFab から取得したデータ群をローカル(端末)にキャッシュ
+    /// </summary>
+    /// <param name="loginResult"></param>
+    /// <returns></returns>
 
     public static async UniTask UpdateLocalCacheAsync(LoginResult loginResult) {
 
@@ -209,13 +221,41 @@ public static class LoginManager {
                      
             );
 
-        // ユーザーデータの初期化
+        // タイトルデータのキャッシュ
+        TitleDataManager.SyncPlayFabToClient(loginResult.InfoResultPayload.TitleData);
+
+        // ユーザーデータのキャッシュ
         UserDataManager.SyncPlayFabToClient(loginResult.InfoResultPayload.UserData);
         
-        // ユーザー名などの初期化
+        // ユーザー名などのキャッシュ
         PlayerPlofileManager.SyncPlayFabToClient(loginResult.InfoResultPayload.PlayerProfile, loginResult.InfoResultPayload.PlayerStatistics);
 
         // TODO 初期化処理を追加
 
+
+        
+
+        Debug.Log("各種データのキャッシュ完了");
     }
+
+    /// <summary>
+    /// デバッグ用
+    /// </summary>
+    private static async UniTask CreateUserDataAsync() {
+
+        //var createData = new Dictionary<string, string> {
+        //    { "Level", "0"}
+        //};
+
+
+
+        //await UserDataManager.UpdatePlayerDataAsync(createData);
+
+        UserDataManager.User = User.Create();
+        string key = "User";
+
+        await UserDataManager.UpdateUserDataByJsonAsync(key);
+
+        Debug.Log("ユーザーデータ 登録完了");
+    } 
 }
