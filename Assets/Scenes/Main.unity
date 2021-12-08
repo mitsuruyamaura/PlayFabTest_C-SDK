@@ -2946,6 +2946,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDebugOn: 0
   debugSceneName: 1
+  skillMasters: []
 --- !u!1 &1695369420
 GameObject:
   m_ObjectHideFlags: 0
