@@ -218,22 +218,24 @@ public static class LoginManager {
 
         // カタログ類の初期化。他のインスタンスの初期化にも必要なので最初に行う
         await UniTask.WhenAll(
-                     
-            );
+
+            CatalogueManager.SyncPlayFabToClient()
+
+        );
 
         // タイトルデータのキャッシュ
         TitleDataManager.SyncPlayFabToClient(loginResult.InfoResultPayload.TitleData);
 
         // ユーザーデータのキャッシュ
         UserDataManager.SyncPlayFabToClient(loginResult.InfoResultPayload.UserData);
-        
+
         // ユーザー名などのキャッシュ
         PlayerPlofileManager.SyncPlayFabToClient(loginResult.InfoResultPayload.PlayerProfile, loginResult.InfoResultPayload.PlayerStatistics);
 
         // TODO 初期化処理を追加
 
 
-        
+
 
         Debug.Log("各種データのキャッシュ完了");
     }
