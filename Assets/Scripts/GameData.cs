@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class GameData : MonoBehaviour
 {
@@ -10,12 +11,27 @@ public class GameData : MonoBehaviour
 
     public SceneNameType debugSceneName;
 
+    public SkillMasterData[] skillMasters;
+
+
     void Awake() {
-        if (instance = null) {
+        if (instance == null) {
             instance = this;
             DontDestroyOnLoad(gameObject);
         } else {
             Destroy(gameObject);
         }
+    }
+
+    /// <summary>
+    /// デバッグ用。マスターデータ可視化用
+    /// </summary>
+    public void SetSkillMaster() {
+
+        skillMasters = new SkillMasterData[TitleDataManager.SkillMasterData.Count];
+
+        skillMasters = TitleDataManager.SkillMasterData.Select(x => x.Value).ToArray();
+
+        Debug.Log(skillMasters[0].atk);
     }
 }

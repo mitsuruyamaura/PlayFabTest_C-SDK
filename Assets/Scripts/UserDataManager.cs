@@ -9,7 +9,7 @@ using System.Linq;
 
 public static class UserDataManager
 {
-    public static User User { get; private set; }
+    public static User User { get; set; }
 
     // TODO Level などの情報を持たせる
 
@@ -30,7 +30,6 @@ public static class UserDataManager
 
         // TODO 他にも処理があれば追加
 
-
         // Debug (メソッドに async を追加する)
         //(bool isSuccess, string errorMessage) updateUser = await UpdateUserDataAsync();
 
@@ -45,12 +44,14 @@ public static class UserDataManager
     /// <param name="userName">key</param>
     /// <param name="userDataPermission"></param>
     /// <returns></returns>
-    public static async UniTask<(bool isSuccess, string errorMessage)> UpdateUserDataAsync(string userName, UserDataPermission userDataPermission = UserDataPermission.Private) {
+    public static async UniTask<(bool isSuccess, string errorMessage)> UpdateUserDataByJsonAsync(string userName, UserDataPermission userDataPermission = UserDataPermission.Private) {
 
         var userJson = JsonConvert.SerializeObject(User);
 
         var request = new UpdateUserDataRequest {
-            Data = new Dictionary<string, string> { { userName, userJson } },
+            Data = new Dictionary<string, string> {
+                { userName, userJson }
+            },
 
             // アクセス許可の変更
             Permission = userDataPermission
@@ -72,12 +73,10 @@ public static class UserDataManager
     /// <param name="updateUserName">key</param>
     /// <param name="value">value</param>
     /// <param name="userDataPermission"></param>
-    public static async void UpdatePlayerDataAsync(string updateUserName, string value, UserDataPermission userDataPermission = UserDataPermission.Private) {
+    public static async UniTask UpdatePlayerDataAsync(Dictionary<string, string> updateUserData, UserDataPermission userDataPermission = UserDataPermission.Private) {
 
         var request = new UpdateUserDataRequest {
-            Data = new Dictionary<string, string> {
-                { updateUserName, value }
-            },
+            Data = updateUserData,
 
             // アクセス許可の変更
             Permission = userDataPermission

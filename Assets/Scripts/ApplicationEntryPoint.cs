@@ -18,6 +18,7 @@ public static class ApplicationEntryPoint
         Debug.Log("‰Šú‰»ŠJn");
 
         await LoginManager.LoginAndUpdateLocalCacheAsync();
+        //await LoginManager.PrepareLoginPlayPab();
 
         Debug.Log("‰Šú‰»Š®—¹");
 

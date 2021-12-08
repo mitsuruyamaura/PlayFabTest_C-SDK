@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
+using Cysharp.Threading.Tasks;
 using System;
 
 public class AccountCanvas : MonoBehaviour
@@ -51,7 +52,7 @@ public class AccountCanvas : MonoBehaviour
 
         btnCancel?.OnClickAsObservable()
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
-            .Subscribe(_ => OnCliclCancel());
+            .Subscribe(_ => OnClickCancel());
 
         btnClosePopUp?.OnClickAsObservable()
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
@@ -115,7 +116,7 @@ public class AccountCanvas : MonoBehaviour
     /// <summary>
     /// NG ƒ{ƒ^ƒ“‚ğ‰Ÿ‰º‚µ‚½Û‚Ìˆ—
     /// </summary>
-    private void OnCliclCancel() {
+    private void OnClickCancel() {
         this.gameObject.SetActive(false);
 
         Debug.Log("NG");
@@ -145,5 +146,7 @@ public class AccountCanvas : MonoBehaviour
 
         txtResponseInfo.text = response.log;
         responsePopUp.SetActive(true);
+
+        return;
     }
 }

@@ -45,7 +45,7 @@ public class DisplayNameCanvas : MonoBehaviour
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ => OnClickCloseCompletePopUp());
 
-        // InputField
+        // InputField(文字入力を監視し、画面の表示更新も行う)
         displayNameInput?.OnEndEditAsObservable()
             .Subscribe(x => UpdateDispayName(x));
     }
