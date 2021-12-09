@@ -226,15 +226,19 @@ public static class LoginManager {
         // タイトルデータのキャッシュ
         TitleDataManager.SyncPlayFabToClient(loginResult.InfoResultPayload.TitleData);
 
-        // ユーザーデータのキャッシュ
-        UserDataManager.SyncPlayFabToClient(loginResult.InfoResultPayload.UserData);
-
         // ユーザー名などのキャッシュ
         PlayerPlofileManager.SyncPlayFabToClient(loginResult.InfoResultPayload.PlayerProfile, loginResult.InfoResultPayload.PlayerStatistics);
 
+
+        // インベントリのキャッシュ
+        InventoryManager.SyncPlayFabToClient(loginResult.InfoResultPayload.UserInventory);
+
+
+        // ユーザーデータのキャッシュ
+        UserDataManager.SyncPlayFabToClient(loginResult.InfoResultPayload.UserData);
+
+        
         // TODO 初期化処理を追加
-
-
 
 
         Debug.Log("各種データのキャッシュ完了");

@@ -7,6 +7,9 @@ public class User
     public int level;
     public bool tutorialFlag;
 
+    public Dictionary<string, Character> Characters { get; set; }
+
+
     /// <summary>
     /// 新規ユーザーの作成
     /// </summary>
