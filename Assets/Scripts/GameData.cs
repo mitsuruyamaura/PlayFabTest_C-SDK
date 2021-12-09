@@ -38,7 +38,9 @@ public class GameData : MonoBehaviour
         Debug.Log(skillMasters[0].atk);
     }
 
-
+    /// <summary>
+    /// デバッグ用。カタログ内のデータの可視化用
+    /// </summary>
     public void SetCatalogItems() {
 
         catalogItems = new CatalogItem[CatalogueManager.CatalogItems.Count];
