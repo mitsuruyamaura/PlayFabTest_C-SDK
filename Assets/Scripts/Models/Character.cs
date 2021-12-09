@@ -4,13 +4,13 @@
 [System.Serializable]
 public class Character
 {
-    public string InstanceId { get; set; }
-    public string CharacterId { get; set; }
+    public string InstanceId;// { get; set; }
+    public string CharacterId;// { get; set; }
 
-    public int Level { get; set; }
+    public int Level;// { get; set; }
 
-    public int Hp => (int)(Master.Hp + Master.Hp * Level * 0.5f);  // レベルを反映する場合
-    public int Atk { get; set; }
+    public int Hp;// => (int)(Master.Hp + Master.Hp * Level * 0.5f);  // レベルを反映する場合
+    public int Atk;// { get; set; }
 
     // TODO 他にも追加したい情報があれば、マスターに合わせて追加する
 

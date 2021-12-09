@@ -31,7 +31,7 @@ public static class UserDataManager
 
         Debug.Log("PlayFab のユーザーデータを取得");
 
-        // インベントリに所持しているアイテムの情報から、Character クラスの情報を検索
+        // インベントリに所持しているアイテムの情報から、Character クラスのアイテム情報を検索
         User.Characters = InventoryManager.Characters.ToDictionary(
             x => x.InstanceId,
             x => 
@@ -47,6 +47,7 @@ public static class UserDataManager
 
         Debug.Log($"所持している Chara : { User.Characters.Count } 体");
 
+        GameData.instance.SetInventoryDatas();
 
         // TODO 他にも処理があれば追加
 
