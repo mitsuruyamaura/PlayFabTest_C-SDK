@@ -1,14 +1,17 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
-using System;
 using System.Linq;
-using System.Text;
 
+/// <summary>
+/// タイトルデータ管理用
+/// </summary>
 public static class TitleDataManager
 {
     public static Dictionary<string, SkillMasterData> SkillMasterData { get; private set; }
+
+    public static Dictionary<string, CharacterMasterData> CharacterMasterData { get; private set; }
+
 
     // TODO　マスターデータ用の変数を追加
 
@@ -23,10 +26,14 @@ public static class TitleDataManager
 
         Debug.Log("TitleData SkillMasterData キャッシュ");
 
-        GameData.instance.SetSkillMaster();
+        CharacterMasterData = JsonConvert.DeserializeObject<CharacterMasterData[]>(titleData["CharacterMasterData"]).ToDictionary(x => x.CharacterId);
+
+        Debug.Log("TitleData CharacterMasterData キャッシュ");
+
+        // Debug 用
+        GameData.instance.SetMasterDatas();
 
         // TODO 他のマスターデータも追加
 
     }
-
 }

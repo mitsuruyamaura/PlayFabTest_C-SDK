@@ -7,5 +7,6 @@ public enum Rarity
     UC,
     C,
     R,
+    SR,
     UR
 }

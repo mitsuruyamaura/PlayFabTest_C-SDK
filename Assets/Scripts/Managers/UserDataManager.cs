@@ -11,6 +11,9 @@ public static class UserDataManager
 {
     public static User User { get; set; }
 
+
+    public static Dictionary<string, Character> Characters => User.Characters;
+
     // TODO Level などの情報を持たせる
 
 
@@ -27,6 +30,24 @@ public static class UserDataManager
             ? JsonConvert.DeserializeObject<User>(user.Value) : User.Create();
 
         Debug.Log("PlayFab のユーザーデータを取得");
+
+        // インベントリに所持しているアイテムの情報から、Character クラスのアイテム情報を検索
+        User.Characters = InventoryManager.Characters.ToDictionary(
+            x => x.InstanceId,
+            x => 
+            {
+                if (User.Characters is null) {
+                    return Character.CreateChara(x.InstanceId, x.CharacterId);
+                }
+
+                return User.Characters.TryGetValue(x.InstanceId, out var character)
+                ? character
+                : Character.CreateChara(x.InstanceId, x.CharacterId);
+            });
+
+        Debug.Log($"所持している Chara : { User.Characters.Count } 体");
+
+        GameData.instance.SetInventoryDatas();
 
         // TODO 他にも処理があれば追加
 
