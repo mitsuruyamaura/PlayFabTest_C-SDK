@@ -26,13 +26,13 @@ public class DisplayNameCanvas : MonoBehaviour
     [SerializeField]
     private Text txtResponseInfo;
 
-    private string displayName;@@// ƒ†[ƒU[–¼“o˜^—p
+    private string displayName;ã€€ã€€// ãƒ¦ãƒ¼ã‚¶ãƒ¼åç™»éŒ²ç”¨
 
 
     void Start() {
         responsePopUp.SetActive(false);
 
-        // ƒ{ƒ^ƒ“‚Ì“o˜^
+        // ãƒœã‚¿ãƒ³ã®ç™»éŒ²
         btnSubmit?.OnClickAsObservable()
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ => OnClickSubmit());
@@ -45,13 +45,13 @@ public class DisplayNameCanvas : MonoBehaviour
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ => OnClickCloseCompletePopUp());
 
-        // InputField(•¶š“ü—Í‚ğŠÄ‹‚µA‰æ–Ê‚Ì•\¦XV‚às‚¤)
+        // InputField(æ–‡å­—å…¥åŠ›ã‚’ç›£è¦–ã—ã€ç”»é¢ã®è¡¨ç¤ºæ›´æ–°ã‚‚è¡Œã†)
         displayNameInput?.OnEndEditAsObservable()
             .Subscribe(x => UpdateDispayName(x));
     }
 
     /// <summary>
-    /// ƒ†[ƒU[–¼‚Ì’l‚Æ•\¦‚ÌXV
+    /// ãƒ¦ãƒ¼ã‚¶ãƒ¼åã®å€¤ã¨è¡¨ç¤ºã®æ›´æ–°
     /// </summary>
     /// <param name="newName"></param>
     private void UpdateDispayName(string newName) {
@@ -61,20 +61,20 @@ public class DisplayNameCanvas : MonoBehaviour
     }
 
     /// <summary>
-    /// OK ƒ{ƒ^ƒ“‚ğ‰Ÿ‰º‚µ‚½Û‚Ìˆ—
+    /// OK ãƒœã‚¿ãƒ³ã‚’æŠ¼ä¸‹ã—ãŸéš›ã®å‡¦ç†
     /// </summary>
     private async void OnClickSubmit() {
 
-        Debug.Log("OK ƒAƒJƒEƒ“ƒg˜AŒg‚Ì³”FŠJn");
+        Debug.Log("OK ã‚¢ã‚«ã‚¦ãƒ³ãƒˆé€£æºã®æ‰¿èªé–‹å§‹");
 
-        // Email ‚ÆƒpƒXƒ[ƒh‚ğ—˜—p‚µ‚ÄAƒ†[ƒU[ƒAƒJƒEƒ“ƒg‚Ì˜AŒg‚ğ‚İ‚é
+        // Email ã¨ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’åˆ©ç”¨ã—ã¦ã€ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®é€£æºã‚’è©¦ã¿ã‚‹
         (bool isSuccess, string message) response = await PlayerPlofileManager.UpdateUserDisplayNameAsync(displayName);
 
-        // Debug—p
+        // Debugç”¨
         if (response.isSuccess) {
-            Debug.Log("ƒ†[ƒU[–¼@XV¬Œ÷");
+            Debug.Log("ãƒ¦ãƒ¼ã‚¶ãƒ¼åã€€æ›´æ–°æˆåŠŸ");
         } else {
-            Debug.Log("ƒ†[ƒU[–¼@XV¸”s");
+            Debug.Log("ãƒ¦ãƒ¼ã‚¶ãƒ¼åã€€æ›´æ–°å¤±æ•—");
         }
 
         txtResponseInfo.text = response.message;
@@ -83,7 +83,7 @@ public class DisplayNameCanvas : MonoBehaviour
     }
 
     /// <summary>
-    /// NG ƒ{ƒ^ƒ“‚ğ‰Ÿ‰º‚µ‚½Û‚Ìˆ—
+    /// NG ãƒœã‚¿ãƒ³ã‚’æŠ¼ä¸‹ã—ãŸéš›ã®å‡¦ç†
     /// </summary>
     private void OnCliclCancel() {
         this.gameObject.SetActive(false);
@@ -92,7 +92,7 @@ public class DisplayNameCanvas : MonoBehaviour
     }
 
     /// <summary>
-    /// CompletePopUp ‚ğƒ^ƒbƒv‚µ‚½Û‚Ìˆ—
+    /// CompletePopUp ã‚’ã‚¿ãƒƒãƒ—ã—ãŸéš›ã®å‡¦ç†
     /// </summary>
     private void OnClickCloseCompletePopUp() {
 

@@ -38,14 +38,14 @@ public class AccountCanvas : MonoBehaviour
     [SerializeField]
     private Text txtResponseInfo;
 
-    private (string email, string pasword) inputValue;@@// Email ‚ÆƒpƒXƒ[ƒh“o˜^—p
+    private (string email, string pasword) inputValue;ã€€ã€€// Email ã¨ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ç™»éŒ²ç”¨
 
 
     void Start()
     {
         responsePopUp.SetActive(false);
 
-        // ƒ{ƒ^ƒ“‚Ì“o˜^
+        // ãƒœã‚¿ãƒ³ã®ç™»éŒ²
         btnSubmit?.OnClickAsObservable()
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ => OnClickSubmit());
@@ -71,7 +71,7 @@ public class AccountCanvas : MonoBehaviour
     }
 
     /// <summary>
-    /// Email ‚Ì’l‚Æ•\¦‚ÌXV
+    /// Email ã®å€¤ã¨è¡¨ç¤ºã®æ›´æ–°
     /// </summary>
     /// <param name="newEmail"></param>
     private void UpdateDispayEmail(string newEmail) {
@@ -81,7 +81,7 @@ public class AccountCanvas : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒpƒXƒ[ƒh‚Ì’l‚Æ•\¦‚ÌXV
+    /// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®å€¤ã¨è¡¨ç¤ºã®æ›´æ–°
     /// </summary>
     /// <param name="newPassword"></param>
     private void UpdateDisplayPassword(string newPassword) {
@@ -91,30 +91,30 @@ public class AccountCanvas : MonoBehaviour
     }
 
     /// <summary>
-    /// OK ƒ{ƒ^ƒ“‚ğ‰Ÿ‰º‚µ‚½Û‚Ìˆ—
+    /// OK ãƒœã‚¿ãƒ³ã‚’æŠ¼ä¸‹ã—ãŸéš›ã®å‡¦ç†
     /// </summary>
     private async void OnClickSubmit() {
 
-        Debug.Log("OK ƒAƒJƒEƒ“ƒg˜AŒg‚Ì³”FŠJn");
+        Debug.Log("OK ã‚¢ã‚«ã‚¦ãƒ³ãƒˆé€£æºã®æ‰¿èªé–‹å§‹");
 
-        // Email ‚ÆƒpƒXƒ[ƒh‚ğ—˜—p‚µ‚ÄAƒ†[ƒU[ƒAƒJƒEƒ“ƒg‚Ì˜AŒg‚ğ‚İ‚é
+        // Email ã¨ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’åˆ©ç”¨ã—ã¦ã€ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®é€£æºã‚’è©¦ã¿ã‚‹
         bool isLink = await PlayFabAccountLink.SetEmailAndPasswordAsync(inputValue.email, inputValue.pasword);
 
         if (isLink) {
-            Debug.Log("˜AŒgŠ®—¹");
+            Debug.Log("é€£æºå®Œäº†");
 
-            txtResponseInfo.text = "ƒAƒJƒEƒ“ƒg˜AŒg‚ªŠ®—¹‚µ‚Ü‚µ‚½B";
+            txtResponseInfo.text = "ã‚¢ã‚«ã‚¦ãƒ³ãƒˆé€£æºãŒå®Œäº†ã—ã¾ã—ãŸã€‚";
             responsePopUp.SetActive(true);
         } else {
-            Debug.Log("ƒAƒJƒEƒ“ƒg˜AŒg‚ª¸”s‚µ‚Ü‚µ‚½B");
+            Debug.Log("ã‚¢ã‚«ã‚¦ãƒ³ãƒˆé€£æºãŒå¤±æ•—ã—ã¾ã—ãŸã€‚");
 
-            txtResponseInfo.text = "ƒAƒJƒEƒ“ƒg˜AŒg‚ª¸”s‚µ‚Ü‚µ‚½B";
+            txtResponseInfo.text = "ã‚¢ã‚«ã‚¦ãƒ³ãƒˆé€£æºãŒå¤±æ•—ã—ã¾ã—ãŸã€‚";
             responsePopUp.SetActive(true);
         }
     }
 
     /// <summary>
-    /// NG ƒ{ƒ^ƒ“‚ğ‰Ÿ‰º‚µ‚½Û‚Ìˆ—
+    /// NG ãƒœã‚¿ãƒ³ã‚’æŠ¼ä¸‹ã—ãŸéš›ã®å‡¦ç†
     /// </summary>
     private void OnClickCancel() {
         this.gameObject.SetActive(false);
@@ -123,7 +123,7 @@ public class AccountCanvas : MonoBehaviour
     }
 
     /// <summary>
-    /// CompletePopUp ‚ğƒ^ƒbƒv‚µ‚½Û‚Ìˆ—
+    /// CompletePopUp ã‚’ã‚¿ãƒƒãƒ—ã—ãŸéš›ã®å‡¦ç†
     /// </summary>
     private void OnClickCloseCompletePopUp() {
 
@@ -133,20 +133,20 @@ public class AccountCanvas : MonoBehaviour
     }
 
     /// <summary>
-    /// Email ‚ÅƒƒOƒCƒ“ƒ{ƒ^ƒ“‚ğ‰Ÿ‰º‚µ‚½Û‚Ìˆ—
+    /// Email ã§ãƒ­ã‚°ã‚¤ãƒ³ãƒœã‚¿ãƒ³ã‚’æŠ¼ä¸‹ã—ãŸéš›ã®å‡¦ç†
     /// </summary>
     private async void OnClickEmailLogin() {
 
-        // Email ‚ÅƒƒOƒCƒ“‚ğ‚İ‚é isLogin = true ‚È‚çƒƒOƒCƒ“¬Œ÷
+        // Email ã§ãƒ­ã‚°ã‚¤ãƒ³ã‚’è©¦ã¿ã‚‹ isLogin = true ãªã‚‰ãƒ­ã‚°ã‚¤ãƒ³æˆåŠŸ
         (bool isLogin, string log) response = await LoginManager.LoginEmailAndPasswordAsync(inputValue.email, inputValue.pasword);
 
-        // TODO isLogin ‚Å•ªŠò‚³‚¹‚Ä‚à‚¢‚¢
+        // TODO isLogin ã§åˆ†å²ã•ã›ã¦ã‚‚ã„ã„
 
         Debug.Log(response.log);
 
         txtResponseInfo.text = response.log;
         responsePopUp.SetActive(true);
-
+        
         return;
     }
 }
