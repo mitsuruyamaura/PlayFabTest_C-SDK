@@ -69,6 +69,7 @@ public static class LoginManager {
 
     /// <summary>
     /// ユーザーデータとタイトルデータを初期化
+    /// EntryPoint から実行
     /// </summary>
     /// <returns></returns>
     public static async UniTask LoginAndUpdateLocalCacheAsync() {
@@ -87,6 +88,14 @@ public static class LoginManager {
 
         // データを自動で取得する設定にしているので、取得したデータをローカルにキャッシュする
         await UpdateLocalCacheAsync(loginResult);
+        
+        
+        // Debug  ランキング送信
+        RankingManager rankingManager = new();
+        await rankingManager.UpdatePlayerStatisticsAsync();
+
+        await rankingManager.GetLeaderboardAsync("Level");
+        await rankingManager.GetLeaderboardAsync("HighScore");
     }
 
     /// <summary>
@@ -150,11 +159,13 @@ public static class LoginManager {
 
         // エラーハンドリング
         //if (response.Error != null) {
-        //    Debug.Log("Error");
+        //    Debug.Log($"Error : { response.Error.GenerateErrorReport() }");
         //}
 
         // エラーの内容を見てハンドリングを行い、ログインに成功しているかを判定
-        var message = response.Error is null ? $"Login success! My PlayFabID is {response.Result.PlayFabId}" : response.Error.GenerateErrorReport();
+        var message = response.Error is null 
+            ? $"Login success! My PlayFabID is {response.Result.PlayFabId}" 
+            : response.Error.GenerateErrorReport();
 
         Debug.Log(message);
 
